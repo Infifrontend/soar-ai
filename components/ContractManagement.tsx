@@ -68,7 +68,7 @@ const contracts = [
     signedDate: '2024-01-10',
     progress: 100,
     nextAction: 'Renewal Review',
-    documents: 5,
+    documentCount: 5,
     breachRisk: 'High',
     breachCount: 2,
     parties: ['SOAR-AI Airlines', 'Global Travel Solutions'],
@@ -130,7 +130,7 @@ const contracts = [
     signedDate: null,
     progress: 85,
     nextAction: 'Awaiting Vendor Signature',
-    documents: 3,
+    documentCount: 3,
     breachRisk: 'Low',
     breachCount: 0,
     parties: ['SOAR-AI Airlines', 'Corporate Journey Ltd'],
@@ -184,7 +184,7 @@ const contracts = [
     signedDate: null,
     progress: 45,
     nextAction: 'Legal Review Required',
-    documents: 2,
+    documentCount: 2,
     breachRisk: 'Low',
     breachCount: 0,
     parties: ['SOAR-AI Airlines', 'Elite Business Travel'],
@@ -225,7 +225,7 @@ const contracts = [
     signedDate: '2022-12-15',
     progress: 100,
     nextAction: 'Breach Resolution Required',
-    documents: 7,
+    documentCount: 7,
     breachRisk: 'High',
     breachCount: 3,
     parties: ['SOAR-AI Airlines', 'Premier Voyage Group'],
@@ -701,7 +701,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
 
     // Convert to JSON string
     const dataStr = JSON.stringify(contractData, null, 2);
-    
+
     // Create and download file
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
@@ -996,7 +996,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                   const expirationStatus = getExpirationStatus(contract.endDate);
                   const aiRec = aiRecommendations[contract.id];
                   const RecommendationIcon = getRecommendationIcon(aiRec?.recommendation);
-                  
+
                   return (
                     <Card key={contract.id} className="relative">
                       <CardContent className="p-6">
@@ -1004,7 +1004,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                         {(expirationStatus.status === 'critical' || expirationStatus.status === 'warning') && (
                           <div className={`absolute top-0 left-0 right-0 h-1 ${expirationStatus.status === 'critical' ? 'bg-red-500' : 'bg-yellow-500'}`} />
                         )}
-                        
+
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-4">
                             <div className="flex items-center justify-center w-12 h-12 bg-muted rounded-lg">
@@ -1135,14 +1135,14 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                           <div className="flex items-center gap-2">
                             <MessageSquare className="h-4 w-4 text-muted-foreground" />
                             <div>
-                              <Label className="text-xs">Comments</Label>
-                              <p className="text-sm">{contract.comments?.length || 0} notes</p>
+                              <Label className="text-xs">Documents</Label>
+                              <p className="text-sm">{contract.documentCount || contract.documents?.length || 0} files</p>
                             </div>
                           </div>
                         </div>
 
                         <Separator className="my-4" />
-                        
+
                         <div className="flex items-center justify-between">
                           <div className="text-sm text-muted-foreground">
                             Last activity: {contract.lastActivity}
@@ -1197,7 +1197,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                   const aiRec = aiRecommendations[contract.id];
                   const RecommendationIcon = getRecommendationIcon(aiRec?.recommendation);
                   const daysLeft = getDaysUntilExpiration(contract.endDate);
-                  
+
                   return (
                     <Card key={contract.id} className={`border-l-4 ${daysLeft <= 30 ? 'border-l-red-500' : daysLeft <= 60 ? 'border-l-yellow-500' : 'border-l-blue-500'}`}>
                       <CardContent className="p-6">
@@ -1311,9 +1311,9 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                 {contracts.map((contract) => {
                   const aiRec = aiRecommendations[contract.id];
                   const RecommendationIcon = getRecommendationIcon(aiRec?.recommendation);
-                  
+
                   if (!aiRec) return null;
-                  
+
                   return (
                     <Card key={contract.id} className={`border-l-4 ${aiRec.recommendation === 'Renew' ? 'border-l-green-500' : aiRec.recommendation === 'Terminate' ? 'border-l-red-500' : 'border-l-yellow-500'}`}>
                       <CardContent className="p-6">
@@ -1560,7 +1560,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                 <TabsTrigger value="timeline">Timeline</TabsTrigger>
                 <TabsTrigger value="comments">Comments</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="summary" className="space-y-4">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-4">
@@ -1612,9 +1612,9 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                     </div>
                   </div>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div>
                   <Label className="text-sm font-medium text-gray-600">Parties Involved</Label>
                   <div className="mt-1">
@@ -1699,7 +1699,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                   </div>
                 )}
               </TabsContent>
-              
+
               <TabsContent value="documents" className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="font-medium">Contract Documents</h4>
@@ -1736,7 +1736,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                   <p className="text-sm text-muted-foreground">No documents attached to this contract</p>
                 )}
               </TabsContent>
-              
+
               <TabsContent value="timeline" className="space-y-4">
                 <h4 className="font-medium">Contract Milestones</h4>
                 <div className="space-y-4">
@@ -1753,7 +1753,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                   ))}
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="comments" className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="font-medium">Contract Comments</h4>
@@ -1822,7 +1822,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
               {(() => {
                 const aiRec = aiRecommendations[selectedContract.id];
                 const RecommendationIcon = getRecommendationIcon(aiRec.recommendation);
-                
+
                 return (
                   <>
                     {/* Recommendation Header */}
@@ -1956,7 +1956,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                             <p className="mt-1">{selectedContract.relationshipScore}/5</p>
                           </div>
                         </div>
-                        
+
                         {selectedContract.alternativeVendors.length > 0 && (
                           <div className="mt-4">
                             <Label className="text-sm font-medium">Alternative Vendors</Label>
@@ -2001,7 +2001,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
               Details of the offer attached to contract {selectedContract?.id}
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedOffer && (
             <div className="space-y-6">
               {/* Header Info */}
@@ -2048,7 +2048,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
                           </div>
                         </div>
                       )}
-                      
+
                       {selectedOffer.promoCodes?.length > 0 && (
                         <div>
                           <Label className="text-sm font-medium text-gray-600 mb-2 block">Applied Promo Codes</Label>
@@ -2111,7 +2111,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
               )}
             </div>
           )}
-          
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowOfferDetail(false)}>
               Close
@@ -2136,7 +2136,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
               Select a different offer to attach to contract {selectedContract?.id}
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div className="p-4 bg-gray-50 rounded-lg">
               <h4 className="font-medium mb-2">Current Contract</h4>
@@ -2191,7 +2191,7 @@ export function ContractManagement({ initialFilters }: ContractManagementProps) 
               </div>
             </div>
           </div>
-          
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowChangeOffer(false)}>
               Cancel

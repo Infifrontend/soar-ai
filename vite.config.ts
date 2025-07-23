@@ -13,7 +13,7 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5000,
     allowedHosts: [
-      "e3350ba6-5ad0-43a6-bd6c-db8f6b8f3e17-00-13v43jo2oq2js.pike.replit.dev",
+      "19a10406-4350-4094-84fe-e116392a58cd-00-2aq03di0u8ry4.pike.replit.dev",
       "localhost",
     ],
   },
